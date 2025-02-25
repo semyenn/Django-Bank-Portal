@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ User.user.username }} | CHD-BANK</title>
+    <link rel="icon" href="https://clipartcraft.com/images/bank-logo-icon-9.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4a90e2, #7b5dfa);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .profile-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 800px;
+            padding: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #4a90e2;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background: rgba(9, 1, 1, 0.721);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 12px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px;
+        }
+
+        .sidebar-header span {
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar a i {
+            width: 24px;
+            margin-right: 12px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .button-group {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px 10px;
+        }
+
+        .button-group button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        #settingsButton {
+            background: rgba(74, 145, 226, 0.9);
+            color: white;
+        }
+
+        #logoutButton {
+            background: rgba(231, 77, 60, 0.9);
+            color: white;
+        }
+        .sidebar-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background-color:#ffffff;
+            color:#4a90e2;
+            border: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
+            opacity: 1;
+            visibility: visible;
+            transition: all 0.3s ease;
+        }
+    
+        .sidebar-toggle:hover {
+            background-color: #f0f0f0; /* Slightly darker on hover for interaction feedback */
+        }
+        
+        .sidebar-toggle.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateX(-100%);
+        }
+        
+        .hamburger {
+            width: 25px;
+            height: 2px;
+            background-color:#4a90e2;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .hamburger::before,
+        .hamburger::after {
+            content: "";
+            width: 25px;
+            height: 2px;
+            background-color: #4a90e2;
+            position: absolute;
+            left: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .hamburger::before {
+            top: -8px;
+        }
+        
+        .hamburger::after {
+            top: 8px;
+        }
+        
+        /* Animate the hamburger to a cross */
+        .sidebar.open .hamburger {
+            transform: rotate(45deg);
+        }
+        
+        .sidebar.open .hamburger::before {
+            transform: rotate(90deg);
+            top: 0;
+        }
+        
+        .sidebar.open .hamburger::after {
+            opacity: 0;
+        }
+        .user-info {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .user-info .profile-photo {
+            flex: 0 0 100px; /* Fixed width for the photo */
+            height: 100px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .user-info .details {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .user-info .details div {
+            flex: 1 1 48%;
+        }
+
+        .user-info label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .user-info p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .edit-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .edit-button a {
+            text-decoration: none;
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .edit-button a:hover {
+            background-color: #003366;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+    
+        .button-group a {
+            text-decoration: none;
+            background-color: #004080;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+    
+        .button-group a:hover {
+            background-color: #003366;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #004080;
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #4a90e2; /* Changed to match your header color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+    
+        .loader .rupee {
+            font-size: 72px; /* Increased size */
+            color: #ffffff; /* Changed to white for contrast */
+            animation: pulse 1.5s infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Added glow effect */
+        }
+    
+        @keyframes pulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
+            }
+        }
+    
+        .loader::after {
+            position: absolute;
+            bottom: 20%;
+            font-size: 24px;
+            color: #ffffff;
+            animation: blink 1s infinite;
+        }
+    
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="rupee">₹</div>
+    </div>
+    <div class="sidebar hidden" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="CHD-BANK Logo">
+            <span>CHD Bank</span>
+        </div>
+        <a href="{% url 'Homepage' %}" class="{% if request.resolver_match.url_name == 'Homepage' %}active{% endif %}">
+            <i class="fas fa-home"></i> <span>Home</span>
+        </a>
+        <a href="{% url 'Dashboard' %}" class="{% if request.resolver_match.url_name == 'Dashboard' %}active{% endif %}">
+            <i class="fas fa-th-large"></i> <span>Dashboard</span>
+        </a>
+        <a href="{% url 'User' %}" class="{% if request.resolver_match.url_name == 'User' %}active{% endif %}">
+            <i class="fas fa-user"></i> <span>Profile</span>
+        </a>
+        <a href="{% url 'transaction page' %}" class="{% if request.resolver_match.url_name == 'transaction page' %}active{% endif %}">
+            <i class="fas fa-exchange-alt"></i> <span>Transactions</span>
+        </a>
+        <a href="{% url 'support page' %}" class="{% if request.resolver_match.url_name == 'support page' %}active{% endif %}">
+            <i class="fas fa-headset"></i> <span>Support</span>
+        </a>
+        <a href="{% url 'Billing Dashboard' %}" class="{% if request.resolver_match.url_name == 'Billing Dashboard' %}active{% endif %}">
+            <i class="fas fa-file-invoice"></i> <span>Bill Payments</span>
+        </a>
+        <div class="button-group">
+            <button id="settingsButton">
+                <i class="fas fa-cogs"></i>
+                <span>Settings</span>
+            </button>
+            <button id="logoutButton" onclick="location.href='{% url 'Logout' %}'">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <div class="hamburger"></div>
+    </button>
+    <div class="profile-container">
+        <h2>{{ User.user.username }}</h2>
+        <div class="user-info">
+            <div class="profile-photo">
+                {% if User.image %}
+                    <img src="{{ User.image.url }}" alt="Profile Photo">
+                {% else %}
+                    <span>No Photo</span>
+                {% endif %}
+            </div>
+            <div class="details">
+                <div>
+                    <label>Username</label>
+                    <p>{{ User.user.username }}</p>
+                </div>
+                <div>
+                    <label>Email</label>
+                    <p>{{ User.email }}</p>
+                </div>
+                <div>
+                    <label>Phone</label>
+                    <p>{{ User.phone }}</p>
+                </div>
+                <div>
+                    <label>Date of Birth</label>
+                    <p>{{ User.DoB }}</p>
+                </div>
+                <div>
+                    <label>Account Number</label>
+                    <p>{{ User.account_number }}</p>
+                </div>
+                <div>
+                    <label>Account Type</label>
+                    <p>{{ User.account_type }}</p>
+                </div>
+                <div>
+                    <label>Address</label>
+                    <p>{{ User.address }}</p>
+                </div>
+                <div>
+                    <label>Gender</label>
+                    <p>{{ User.gender }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="edit-button">
+            <a href="{% url 'Edit Profile' %}">Edit Profile</a>
+        </div>
+        <footer>
+            <p>&copy; 2024 CHD Bank. All rights reserved.</p>
+        </footer>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const loader = document.querySelector('.loader');
+                setTimeout(function() {
+                    loader.classList.add('hidden');
+                }, 2000);
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                let isSidebarOpen = false;
+            
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('hidden');
+                    sidebar.classList.toggle('open');
+                    isSidebarOpen = !isSidebarOpen;
+                    toggleSidebarButtonVisibility();
+                });
+            
+            
+                document.addEventListener('click', (e) => {
+                    if (
+                        isSidebarOpen &&
+                        !sidebar.contains(e.target) &&
+                        !sidebarToggle.contains(e.target)
+                    ) {
+                        sidebar.classList.add('hidden');
+                        sidebar.classList.remove('open');
+                        isSidebarOpen = false;
+                        toggleSidebarButtonVisibility();
+                    }
+                });
+            
+                function toggleSidebarButtonVisibility() {
+                    if (isSidebarOpen) {
+                        sidebarToggle.classList.add('hidden');
+                    } else {
+                        sidebarToggle.classList.remove('hidden');
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CHD-BANK</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="https://clipartcraft.com/images/bank-logo-icon-9.png" type="image/png">
+</head>
+<style>
+    /* Global Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #4a90e2, #7b5dfa);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .dashboard-container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 800px;
+        padding: 40px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 24px;
+        color: #004080;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 250px;
+        background: rgba(9, 1, 1, 0.721);
+        backdrop-filter: blur(10px);
+        border-right: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar.hidden {
+        transform: translateX(-100%);
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        padding: 15px 10px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-header img {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        margin-right: 12px;
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 5px;
+    }
+
+    .sidebar-header span {
+        color: #ffffff;
+        font-size: 1.2em;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .sidebar a i {
+        width: 24px;
+        margin-right: 12px;
+        text-align: center;
+        font-size: 1.1em;
+    }
+
+    .sidebar a:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(5px);
+    }
+
+    .button-group {
+        margin-top: auto; /* Push buttons to bottom */
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px; /* Space between buttons */
+        padding: 20px 10px;
+    }
+
+    .button-group button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #settingsButton {
+        background: rgba(74, 145, 226, 0.9);
+        color: white;
+    }
+
+    #logoutButton {
+        background: rgba(231, 77, 60, 0.9); /* Red color for logout */
+        color: white;
+    }
+
+    .button-group button:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar.hidden {
+        transform: translateX(-100%); /* Change from -260px to -100% */
+        visibility: hidden; /* Add visibility hidden */
+        opacity: 0; /* Add opacity transition */
+    }
+
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .sidebar a:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(5px);
+    }
+
+    .sidebar .active {
+        background: rgba(255, 255, 255, 0.2);
+        font-weight: bold;
+    }
+
+    .sidebar.open ~ .sidebar-toggle {
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    .sidebar-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        z-index: 1001;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-toggle:hover {
+        background-color: #f0f0f0; /* Slightly darker on hover for interaction feedback */
+    }
+    
+    .sidebar-toggle.hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .hamburger {
+        width: 25px;
+        height: 2px;
+        background-color:#4a90e2;
+        position: relative;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .hamburger::before,
+    .hamburger::after {
+        content: "";
+        width: 25px;
+        height: 2px;
+        background-color: #4a90e2;
+        position: absolute;
+        left: 0;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    .hamburger::before {
+        top: -8px;
+    }
+    
+    .hamburger::after {
+        top: 8px;
+    }
+    
+    /* Animate the hamburger to a cross */
+    .sidebar.open .hamburger {
+        transform: rotate(45deg);
+    }
+    
+    .sidebar.open .hamburger::before {
+        transform: rotate(90deg);
+        top: 0;
+    }
+    
+    .sidebar.open .hamburger::after {
+        opacity: 0;
+    }
+
+    .user-info {
+        display: flex;
+        gap: 20px; /* Space between items */
+        align-items: center; /* Align content vertically */
+    }
+    
+    .user-info .details {
+        flex: 1; /* Allow details to expand */
+    }
+    
+    .user-info .profile-photo {
+        flex: 0 0 100px; /* Fixed width for the photo */
+        height: 100px;
+        border-radius: 50%;
+        background-color: #ddd;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    
+
+    .total-balance {
+        text-align: center;
+        font-size: 20px;
+        color: #004080;
+        margin: 20px 0;
+        font-weight: bold;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .actions button {
+        flex: 1;
+        padding: 12px;
+        background-color: #004080;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .actions button:hover {
+        background-color: #003366;
+    }
+
+    .actions .withdrawal {
+        background-color: #e74c3c; /* Red */
+    }
+
+    .actions .withdrawal:hover {
+        background-color: #c0392b; /* Darker red */
+    }
+
+    .actions .deposit {
+        background-color: #2ecc71; /* Green */
+    }
+
+    .actions .deposit:hover {
+        background-color: #27ae60; /* Darker green */
+    }
+
+    .actions .fund-transfer {
+        background-color: #004080; /* Gray */
+    }
+
+    .actions .fund-transfer:hover {
+        background-color: #004080 /* Darker gray */
+    }
+
+    .account-overview {
+        margin-top: 30px;
+    }
+
+    .account-overview h3 {
+        font-size: 20px;
+        color: #004080;
+        margin-bottom: 15px;
+    }
+
+    .account-overview table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .account-overview th, .account-overview td {
+        text-align: left;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .account-overview th {
+        background-color: #f8f8f8;
+        font-weight: bold;
+    }
+
+    .credit {
+        color: green;
+    }
+
+    .debit {
+        color: red;
+    }
+
+    .view-more {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .view-more a {
+        text-decoration: none;
+        color: #004080;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .view-more a:hover {
+        text-decoration: underline;
+    }
+    .button-group {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 20px;
+    }
+
+    .button-group a {
+        text-decoration: none;
+        background-color: #004080;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .button-group a:hover {
+        background-color: #003366;
+    }
+    .loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #4a90e2; /* Changed to match your header color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s, visibility 0.5s;
+    }
+
+    .loader .rupee {
+        font-size: 72px; /* Increased size */
+        color: #ffffff; /* Changed to white for contrast */
+        animation: pulse 1.5s infinite;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Added glow effect */
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5) rotate(180deg);
+            opacity: 0.7;
+        }
+        100% {
+            transform: scale(1) rotate(360deg);
+            opacity: 1;
+        }
+    }
+
+    .loader::after {
+        position: absolute;
+        bottom: 20%;
+        font-size: 24px;
+        color: #ffffff;
+        animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+    }
+
+    .loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+    .user-info-and-chart {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; /* Changed from stretch to flex-start */
+        gap: 20px;
+    }
+
+    .user-info {
+        flex: 1;
+    }
+
+    .data-visualization-card {
+        flex: 1;
+        margin-top: -20px; /* Adjust this value to move the chart upwards */
+        padding: 10px;
+        background-color: #ffffff;
+        border-radius: 8px;
+    }
+
+    .data-visualization-card img {
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+        .user-info-and-chart {
+            flex-direction: column;
+        }
+        .data-visualization-card {
+            margin-top: 0; /* Reset margin for mobile view */
+        }
+    }
+
+    .data-visualization-card h3 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: #004080;
+    }
+    .balance-card {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        width: 300px;
+        margin: 0 auto;
+      }
+      .balance-card h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #333;
+      }
+      .balance-card .balance {
+        font-size: 2rem;
+        color: #28a745;
+        margin: 10px 0;
+      }
+      .balance-card .toggle-btn {
+        background: none;
+        border: none;
+        font-size: 1rem;
+        color: #007bff;
+        cursor: pointer;
+      }
+      .toggle-btn:focus {
+        outline: none;
+      }
+      #chatbot-container {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 350px;
+        height: 500px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: none;
+        z-index: 1000;
+        animation: fadeIn 0.3s;
+    }
+
+    #chatbot-header {
+        background: linear-gradient(135deg, #4a90e2, #7b5dfa);
+        color: white;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #chatbot-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    #chatbot-messages {
+        height: 380px;
+        overflow-y: auto;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        max-width: 80%;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 20px;
+        animation: messageAppear 0.3s ease-out;
+    }
+
+    .user-message {
+        align-self: flex-end;
+        background-color: #4a90e2;
+        color: white;
+        border-bottom-right-radius: 0;
+    }
+
+    .bot-message {
+        align-self: flex-start;
+        background-color: #f0f0f0;
+        color: #333;
+        border-bottom-left-radius: 0;
+    }
+
+    #chatbot-input {
+        display: flex;
+        border-top: 1px solid #e0e0e0;
+        padding: 10px;
+    }
+
+    #chatbot-text {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+
+    #chatbot-send {
+        background: #4a90e2;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-left: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    #chatbot-send:hover {
+        background-color: #3a7bc8;
+    }
+
+    #chatbot-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #4a90e2, #7b5dfa);
+        color: white;
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        font-size: 24px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        z-index: 1001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+    }
+
+    #chatbot-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    .typing-indicator {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .typing-indicator span {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin: 0 2px;
+        background-color: #4a90e2;
+        border-radius: 50%;
+        animation: typing 1s infinite;
+    }
+
+    @keyframes typing {
+        0%, 60%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-10px); }
+    }
+
+    @keyframes messageAppear {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+</style>
+<body>
+    <div class="loader">
+        <div class="rupee">₹</div>
+    </div>
+    <div class="sidebar hidden" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="CHD-BANK Logo">
+            <span>CHD Bank</span>
+        </div>
+        <a href="{% url 'Homepage' %}" class="{% if request.resolver_match.url_name == 'Homepage' %}active{% endif %}">
+            <i class="fas fa-home"></i> <span>Home</span>
+        </a>
+        <a href="{% url 'Dashboard' %}" class="{% if request.resolver_match.url_name == 'Dashboard' %}active{% endif %}">
+            <i class="fas fa-th-large"></i> <span>Dashboard</span>
+        </a>
+        <a href="{% url 'User' %}" class="{% if request.resolver_match.url_name == 'User' %}active{% endif %}">
+            <i class="fas fa-user"></i> <span>Profile</span>
+        </a>
+        <a href="{% url 'transaction page' %}" class="{% if request.resolver_match.url_name == 'transaction page' %}active{% endif %}">
+            <i class="fas fa-exchange-alt"></i> <span>Transactions</span>
+        </a>
+        <a href="{% url 'support page' %}" class="{% if request.resolver_match.url_name == 'support page' %}active{% endif %}">
+            <i class="fas fa-headset"></i> <span>Support</span>
+        </a>
+        <a href="{% url 'Billing Dashboard' %}" class="{% if request.resolver_match.url_name == 'Billing Dashboard' %}active{% endif %}">
+            <i class="fas fa-file-invoice"></i> <span>Bill Payments</span>
+        </a>
+        <div class="button-group">
+            <button id="settingsButton">
+                <i class="fas fa-cogs"></i>
+                <span>Settings</span>
+            </button>
+            <button id="logoutButton" onclick="location.href='{% url 'Logout' %}'">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <div class="hamburger"></div>
+    </button>
+    
+    <div class="dashboard-container">
+        <h2>Dashboard</h2>
+        
+        <div class="user-info-and-chart">
+            <div class="user-info">
+                <div class="profile-photo">
+                    {% if User.image %}
+                        <img src="{{ User.image.url }}" alt="Profile Photo">
+                    {% else %}
+                        <span>No Photo</span>
+                    {% endif %}
+                </div>
+                <div class="details">
+                    <div>
+                        <strong><label>Full Name</label></strong>
+                        <p>{{ User.user.username }}</p>
+                    </div>
+                    <div>
+                        <strong><label>Account No.</label></strong>
+                        <p>{{ User.account_number }}</p>
+                    </div>
+                    <div>
+                        <strong><label>Account Type</label></strong>
+                        <p>{{ User.account_type }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="data-visualization-card">
+                {% if chart != None  %}
+                <img src="data:image/png;base64,{{ chart }}" alt="Account Summary Chart" style="display: block; margin-left: auto; margin-right: auto; max-width: 100%;">
+                {% else %}
+                <p>No transaction history available.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="balance-card">
+            <h2>Total Balance</h2>
+            <div class="balance" id="balance">₹{{ User.balance }}</div>
+            <button class="toggle-btn" onclick="toggleBalance()">Hide Balance</button>
+        </div>
+        <div class="account-overview">
+            <h3>Transaction History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Account</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for T in Transactions|slice:":5" %}
+                    <tr>
+                        <td>{{ T.timestamp }}</td>
+                        <td>{{ T.receiptent_no }}</td>
+                        <td>{{ T.about }}</td>
+                        <td>{{ T.transaction_type }}</td>
+                        {% if T.transaction_type == 'DEPOSIT' %}
+                            <td class="credit">₹{{ T.amount }}</td>
+                        {% elif T.transaction_type == 'WITHDRAW' %}
+                            <td class="debit">₹{{ T.amount }}</td>
+                        {% elif T.transaction_type == 'TRANSFER' %}
+                            <td style="color: #004080;">₹{{ T.amount }}</td>
+                        {% endif %}
+                        <td>₹{{ User.balance }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="view-more">
+                <a href="{% url 'transaction page' %}">View More Transactions</a>
+            </div>
+            <div class="actions">
+                <button class="fund-transfer" onclick="location.href='{% url 'Transfers' %}'">Fund Transfer</button>
+                <button class="withdrawal" onclick="location.href='{% url 'WithDrawal' %}'">Withdrawal</button>
+                <button class="deposit" onclick="location.href='{% url 'Deposit' %}'">Deposit</button>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="container">
+                <p>&copy; 2024 CHD Bank. All rights reserved.</p>
+            </div>
+        </footer>
+        <div id="chatbot-container">
+            <div id="chatbot-header">
+                <span>CHD-BANK Assistant</span>
+                <button id="chatbot-close">&times;</button>
+            </div>
+            <div id="chatbot-messages"></div>
+            <div id="chatbot-input">
+                <input type="text" id="chatbot-text" placeholder="Type your message...">
+                <button id="chatbot-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <button id="chatbot-toggle"><i class="fas fa-user-tie"></i></button>
+    
+    </div>
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}               
+    
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+                    <div class="toast-header">
+                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Bank Logo" style="width: 24px; height: 24px;">
+                        <strong class="me-auto">CHD Banking</strong>
+                        <small>Just now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+            </div> 
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}               
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+                    <div class="toast-header">
+                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Bank Logo" style="width: 24px; height: 24px;">
+                        <strong class="me-auto">CHD Banking</strong>
+                        <small>Just now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const loader = document.querySelector('.loader');
+                setTimeout(function() {
+                    loader.classList.add('hidden');
+                }, 2000); // Increased to 2 seconds for better visibility
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize and show all toasts
+                const toastElements = document.querySelectorAll('.toast');
+                toastElements.forEach(toastEl => {
+                    const toast = new bootstrap.Toast(toastEl);
+                    toast.show();
+                });
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                let isSidebarOpen = false;
+            
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('hidden');
+                    sidebar.classList.toggle('open');
+                    isSidebarOpen = !isSidebarOpen;
+                    toggleSidebarButtonVisibility();
+                });
+            
+            
+                document.addEventListener('click', (e) => {
+                    if (
+                        isSidebarOpen &&
+                        !sidebar.contains(e.target) &&
+                        !sidebarToggle.contains(e.target)
+                    ) {
+                        sidebar.classList.add('hidden');
+                        sidebar.classList.remove('open');
+                        isSidebarOpen = false;
+                        toggleSidebarButtonVisibility();
+                    }
+                });
+            
+                function toggleSidebarButtonVisibility() {
+                    if (isSidebarOpen) {
+                        sidebarToggle.classList.add('hidden');
+                    } else {
+                        sidebarToggle.classList.remove('hidden');
+                    }
+                }
+            });
+        </script>
+        <script>
+            let balanceVisible = true;
+            function toggleBalance() {
+              const balance = document.getElementById("balance");
+              const button = document.querySelector(".toggle-btn");
+              if (balanceVisible) {
+                balance.textContent = "₹₹₹₹₹₹₹";
+                button.textContent = "Show Balance";
+              } else {
+                balance.textContent = "₹{{ User.balance }}";
+                button.textContent = "Hide Balance";
+              }
+              balanceVisible = !balanceVisible;
+            }
+        </script>
+        <script>
+            const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const chatbotClose = document.getElementById('chatbot-close');
+
+        chatbotToggle.addEventListener('click', () => {
+            chatbotContainer.style.display = chatbotContainer.style.display === 'none' ? 'block' : 'none';
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            chatbotContainer.style.display = 'none';
+        });
+
+        // Initialize chatbot as hidden
+        chatbotContainer.style.display = 'none';
+
+        document.getElementById("chatbot-send").addEventListener("click", sendMessage);
+        document.getElementById("chatbot-text").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    
+        function sendMessage() {
+            const inputField = document.getElementById("chatbot-text");
+            const userMessage = inputField.value.trim();
+            if (userMessage) {
+                const messages = document.getElementById("chatbot-messages");
+                addMessage(userMessage, 'user-message');
+                inputField.value = "";
+    
+                // Show typing indicator
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'typing-indicator';
+                typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+                messages.appendChild(typingIndicator);
+    
+                // Send message to Django backend
+                fetch('/chatbot/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ message: userMessage })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Remove typing indicator
+                    messages.removeChild(typingIndicator);
+    
+                    const botMessage = data.reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    addMessage(botMessage, 'bot-message');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Remove typing indicator
+                    messages.removeChild(typingIndicator);
+                });
+            }
+        }
+    
+        function addMessage(message, className) {
+            const messages = document.getElementById("chatbot-messages");
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${className}`;
+            messageElement.innerHTML = message;
+            messages.appendChild(messageElement);
+            messages.scrollTop = messages.scrollHeight;
+        }
+    
+        </script>    
+    </div>
+</body>
+</html>
