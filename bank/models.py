@@ -9,6 +9,12 @@ from django.utils import timezone
 # number, email, gender, account type, balance, address, image, PAN, Aadhaar, and date of birth.
 class User_reg(models.Model):
 
+    user_type = [
+        ('User', 'User'),
+        ('Manager', 'Manager'),
+        ('Admin', 'Admin'),
+    ]
+
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     phone = models.IntegerField(default=0)
     account_number = models.CharField(max_length=20,unique=True)
@@ -21,7 +27,7 @@ class User_reg(models.Model):
     Pan = models.CharField(max_length=50,default="")
     aadhaar = models.CharField(max_length=50,default="")
     DoB = models.CharField(max_length=20,default="")
-    
+    Role = models.CharField(max_length=100,default="User",choices=user_type)
 
     def __str__(self):
         return self.user.username
@@ -48,6 +54,7 @@ class Transactions(models.Model):
 
     def __str__(self):
         return self.user.user.username
+
     
 class Loan(models.Model):
     LOAN_TYPES = [
@@ -72,6 +79,10 @@ class Loan(models.Model):
     timestamp = models.DateTimeField(default=timezone.now())
     def __str__(self):
         return self.user.account_number + '-' + self.loan_type
+    
+    def Loan_count(self):
+        laon = int(Loan.objects.filter(loan_status="PENDING").count())
+        return laon
 
 class BillPayment(models.Model):
     BILL_TYPES = (

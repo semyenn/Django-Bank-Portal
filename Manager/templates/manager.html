@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Portal | CHD-BANK</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="https://clipartcraft.com/images/bank-logo-icon-9.png" type="image/png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4a90e2, #7b5dfa);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .dashboard-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 1000px;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #004080;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background: rgba(9, 1, 1, 0.721);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 12px;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px;
+        }
+
+        .sidebar-header span {
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar a i {
+            width: 24px;
+            margin-right: 12px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .sidebar .active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
+
+        .button-group {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px 10px;
+        }
+
+        .button-group button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #settingsButton {
+            background: rgba(74, 145, 226, 0.9);
+            color: white;
+        }
+
+        #logoutButton {
+            background: rgba(231, 77, 60, 0.9);
+            color: white;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .hamburger {
+            width: 25px;
+            height: 2px;
+            background-color: #4a90e2;
+            position: relative;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .hamburger::before,
+        .hamburger::after {
+            content: "";
+            width: 25px;
+            height: 2px;
+            background-color: #4a90e2;
+            position: absolute;
+            left: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .hamburger::before {
+            top: -8px;
+        }
+        
+        .hamburger::after {
+            top: 8px;
+        }
+
+        .nav-tabs {
+            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #495057;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link:hover {
+            border-color: #e9ecef #e9ecef #dee2e6;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #004080;
+            background-color: #fff;
+            border-bottom-color: transparent;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            padding: 15px 0;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 12px 15px;
+            font-weight: 600;
+            color: #004080;
+        }
+
+        .badge {
+            font-size: 85%;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .badge-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .badge-approved {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .badge-rejected {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-sm {
+            padding: 4px 8px;
+            font-size: 14px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #004080;
+            padding: 8px 12px;
+            text-decoration: none;
+            border: 1px solid #dee2e6;
+            margin: 0 4px;
+            border-radius: 4px;
+        }
+
+        .pagination a.active {
+            background-color: #004080;
+            color: white;
+            border-color: #004080;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: #e9ecef;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .dashboard-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            font-size: 18px;
+            color: #004080;
+            margin-bottom: 10px;
+        }
+
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .summary-card.pending {
+            border-left: 4px solid #ffc107;
+        }
+
+        .summary-card.approved {
+            border-left: 4px solid #28a745;
+        }
+
+        .summary-card.alert {
+            border-left: 4px solid #dc3545;
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #4a90e2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader .rupee {
+            font-size: 72px;
+            color: #ffffff;
+            animation: pulse 1.5s infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Add these styles to your existing <style> section */
+        .search-bar {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 35px 10px 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.15s ease-in-out;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        .clear-search:hover {
+            color: #dc3545;
+        }
+
+        /* Add highlight class for search results */
+        .search-highlight {
+            background-color: rgba(74, 144, 226, 0.1);
+            transition: background-color 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="rupee">₹</div>
+    </div>
+
+    <div class="sidebar hidden" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="CHD-BANK Logo">
+            <span>CHD Bank</span>
+        </div>
+        <a href="#" class="active">
+            <i class="fas fa-tachometer-alt"></i> <span>Manager Dashboard</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-money-bill-wave"></i> <span>Loan Management</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-exchange-alt"></i> <span>Transactions</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-users"></i> <span>Customer Management</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-file-alt"></i> <span>Reports</span>
+        </a>
+        <a href="#">
+            <i class="fas fa-shield-alt"></i> <span>Security & Logs</span>
+        </a>
+        <div class="button-group">
+            <button id="settingsButton">
+                <i class="fas fa-cogs"></i>
+                <span>Settings</span>
+            </button>
+            <button id="logoutButton"  onclick="window.location.href='{% url 'logout' %}'">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <div class="hamburger"></div>
+    </button>
+
+    <div class="dashboard-container">
+        <h2>Manager Dashboard</h2>
+
+        <div class="dashboard-summary">
+            <div class="summary-card pending">
+                <h3>Pending Loans</h3>
+                <div class="value">{{ total_loans }}</div>
+            </div>
+            <div class="summary-card approved">
+                <h3>Today's Transactions</h3>
+                <div class="value">{{ total_transactions }}</div>
+            </div>
+            <div class="summary-card alert">
+                <h3>Security Alerts</h3>
+                <div class="value">3</div>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs" id="managerTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="loans-tab" data-bs-toggle="tab" data-bs-target="#loans" type="button" role="tab">Loan Approval</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions" type="button" role="tab">Transactions</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab">Security Logs</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="managerTabContent">
+            <!-- Loan Approval Tab -->
+            <div class="tab-pane fade show active" id="loans" role="tabpanel">
+                <div class="search-bar">
+                    <input type="text" 
+                           placeholder="Search loans by account number, customer, type, amount or status..." 
+                           aria-label="Search loans">
+                </div>
+                
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Pending Loan Applications</span>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary">Export</button>
+                            <button class="btn btn-sm btn-outline-secondary">Filter</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Application ID</th>
+                                    <th>Customer</th>
+                                    <th>Loan Type</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for loan in loans %}
+                                <tr data-account="{{ loan.user.account_number }}" 
+                                    data-customer="{{ loan.user.user.username }}" 
+                                    data-type="{{ loan.loan_type }}" 
+                                    data-amount="{{ loan.loan_amount }}" 
+                                    data-status="{{ loan.loan_status }}">
+                                    <td>{{ loan.user.account_number }}</td>
+                                    <td>{{ loan.user.user.username }}</td>
+                                    <td>{{ loan.loan_type }}</td>
+                                    <td>{{loan.loan_amount}}</td>
+                                    <td>{{ loan.timestamp }}/td>
+                                    <td><span class="badge 
+                                        {% if loan.loan_status == 'PENDING' %}badge-pending
+                                        {% elif loan.loan_status == 'APPROVED' %}badge-approved
+                                        {% elif loan.loan_status == 'REJECTED' %}badge-rejected
+                                        {% endif %}">
+                                        {{ loan.loan_status }}
+                                    </span></td>
+                                    <td>
+                                        <form method="POST" action="{% url 'loan_approve' loan.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            {% if loan.loan_status == "APPROVED" or loan.loan_status == "REJECTED"%}
+                                                <button type="submit" class="btn btn-sm btn-success" disabled>Action Taken</button>
+                                            {% else %}
+                                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                                            {% endif %}
+                                        </form>
+                                        <form method="POST" action="{% url 'loan_reject' loan.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            {% if loan.loan_status == "REJECTED" or loan.loan_status == "APPROVED" %}
+                                                <button type="submit" class="btn btn-sm btn-danger" disabled>Action Taken</button>
+                                            {% else %}
+                                                <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                            {% endif %}
+                                        </form> 
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div class="tab-pane fade" id="transactions" role="tabpanel">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search transactions by account number, amount or date...">
+                </div>
+                
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Recent Transactions</span>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary">Export</button>
+                            <button class="btn btn-sm btn-outline-secondary">Filter</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Account</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Tran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ transaction.user.account_number }}</td>
+                                    <td>{{ transaction.receiptent_no }}</td>
+                                    <td>{{ transaction.transaction_type }}</td>
+                                    <td>{{ transaction.amount }}</td>
+                                    <td>{{ transaction.timestamp }}</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">Details</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Logs Tab -->
+            <div class="tab-pane fade" id="logs" role="tabpanel">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search logs by user, action or date...">
+                </div>
+                
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>System Logs</span>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary">Export</button>
+                            <button class="btn btn-sm btn-outline-secondary">Filter</button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Log ID</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>IP Address</th>
+                                    <th>Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>LOG39845</td>
+                                    <td>admin@chdbank.com</td>
+                                    <td>User Login</td>
+                                    <td>192.168.1.105</td>
+                                    <td>01 Mar 2025, 09:55 AM</td>
+                                    <td><span class="badge bg-success">Success</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LOG39844</td>
+                                    <td>rohit.sharma@gmail.com</td>
+                                    <td>Loan Application</td>
+                                    <td>103.25.42.156</td>
+                                    <td>01 Mar 2025, 09:40 AM</td>
+                                    <td><span class="badge bg-success">Success</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LOG39843</td>
+                                    <td>priya.patel@yahoo.com</td>
+                                    <td>User Login</td>
+                                    <td>45.126.18.201</td>
+                                    <td>01 Mar 2025, 09:25 AM</td>
+                                    <td><span class="badge bg-success">Success</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LOG39842</td>
+                                    <td>unknown</td>
+                                    <td>Failed Login</td>
+                                    <td>185.93.45.12</td>
+                                    <td>01 Mar 2025, 09:20 AM</td>
+                                    <td><span class="badge bg-danger">Failure</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LOG39841</td>
+                                    <td>system</td>
+                                    <td>Database Backup</td>
+                                    <td>Internal</td>
+                                    <td>01 Mar 2025, 09:00 AM</td>
+                                    <td><span class="badge bg-success">Success</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle loader
+            const loader = document.querySelector('.loader');
+            setTimeout(function() {
+                loader.classList.add('hidden');
+            }, 1500);
+
+            // Handle sidebar toggle
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            let isSidebarOpen = false;
+        
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                isSidebarOpen = !isSidebarOpen;
+            });
+        
+            document.addEventListener('click', (e) => {
+                if (
+                    isSidebarOpen &&
+                    !sidebar.contains(e.target) &&
+                    !sidebarToggle.contains(e.target)
+                ) {
+                    sidebar.classList.add('hidden');
+                    isSidebarOpen = false;
+                }
+            });
+
+            // Tab functionality
+            const tabs = document.querySelectorAll('.nav-link');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and panes
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabPanes.forEach(p => {
+                        p.classList.remove('show', 'active');
+                    });
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Show corresponding tab pane
+                    const target = tab.getAttribute('data-bs-target').substring(1);
+                    document.getElementById(target).classList.add('show', 'active');
+                });
+            });
+
+            // Search functionality
+            const searchInput = document.querySelector('.search-bar input');
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const loanTable = document.querySelector('#loans table tbody');
+                const rows = loanTable.getElementsByTagName('tr');
+
+                Array.from(rows).forEach(row => {
+                    const accountNumber = row.cells[0].textContent.toLowerCase();
+                    const username = row.cells[1].textContent.toLowerCase();
+                    const loanType = row.cells[2].textContent.toLowerCase();
+                    const amount = row.cells[3].textContent.toLowerCase();
+                    const status = row.cells[5].textContent.toLowerCase();
+
+                    if (accountNumber.includes(searchTerm) || 
+                        username.includes(searchTerm) || 
+                        loanType.includes(searchTerm) || 
+                        amount.includes(searchTerm) || 
+                        status.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Clear search
+            const searchBar = document.querySelector('.search-bar');
+            const clearButton = document.createElement('button');
+            clearButton.innerHTML = '×';
+            clearButton.className = 'clear-search';
+            searchBar.appendChild(clearButton);
+
+            clearButton.addEventListener('click', function() {
+                searchInput.value = '';
+                const event = new Event('keyup');
+                searchInput.dispatchEvent(event);
+            });
+
+            // Search functionality for both Loans and Transactions
+            const searchInputs = document.querySelectorAll('.search-bar input');
+            
+            searchInputs.forEach(searchInput => {
+                searchInput.addEventListener('keyup', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const activeTab = document.querySelector('.tab-pane.active');
+                    const tableBody = activeTab.querySelector('table tbody');
+                    const rows = tableBody.getElementsByTagName('tr');
+
+                    Array.from(rows).forEach(row => {
+                        let text = '';
+                        
+                        // Get searchable content based on active tab
+                        if (activeTab.id === 'loans') {
+                            text = [
+                                row.cells[0].textContent, // Account Number
+                                row.cells[1].textContent, // Customer
+                                row.cells[2].textContent, // Loan Type
+                                row.cells[3].textContent, // Amount
+                                row.cells[5].textContent  // Status
+                            ].join(' ').toLowerCase();
+                        } else if (activeTab.id === 'transactions') {
+                            text = [
+                                row.cells[0].textContent, // Transaction ID
+                                row.cells[1].textContent, // Account
+                                row.cells[2].textContent, // Type
+                                row.cells[3].textContent, // Amount
+                                row.cells[4].textContent  // Date & Time
+                            ].join(' ').toLowerCase();
+                        }
+
+                        if (text.includes(searchTerm)) {
+                            row.style.display = '';
+                            // Highlight matching text
+                            highlightMatch(row, searchTerm);
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Function to highlight matching text
+            function highlightMatch(row, searchTerm) {
+                Array.from(row.cells).forEach(cell => {
+                    const text = cell.textContent;
+                    if (text.toLowerCase().includes(searchTerm)) {
+                        cell.classList.add('search-highlight');
+                    } else {
+                        cell.classList.remove('search-highlight');
+                    }
+                });
+            }
+
+            // Add clear button for each search bar
+            const searchBars = document.querySelectorAll('.search-bar');
+            searchBars.forEach(searchBar => {
+                const clearButton = document.createElement('button');
+                clearButton.innerHTML = '×';
+                clearButton.className = 'clear-search';
+                searchBar.appendChild(clearButton);
+
+                clearButton.addEventListener('click', function() {
+                    const input = searchBar.querySelector('input');
+                    input.value = '';
+                    const event = new Event('keyup');
+                    input.dispatchEvent(event);
+                    
+                    // Remove all highlights
+                    const activeTab = document.querySelector('.tab-pane.active');
+                    const rows = activeTab.querySelectorAll('tbody tr');
+                    rows.forEach(row => {
+                        Array.from(row.cells).forEach(cell => {
+                            cell.classList.remove('search-highlight');
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

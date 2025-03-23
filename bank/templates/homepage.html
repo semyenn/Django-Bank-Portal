@@ -450,7 +450,11 @@
                     <li><a href="#services">Services</a></li>
                     <li><a href="{% url 'support page' %}">Contact</a></li>
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'Dashboard' %}">Dashboard</a></li>
+                        {% if User.Role == "Manager" %}
+                        <li><a href="{% url 'Manager' %}">Manager Dashboard</a></li>
+                        {% elif User.Role == "User" %}
+                            <li><a href="{% url 'Dashboard' %}">Dashboard</a></li>
+                        {% endif %}
                     {% else %}
                     <li><a href="{% url 'login page' %}">Login</a></li>
                     {% endif %}
@@ -473,7 +477,11 @@
             <h2>Welcome to CHD Banking</h2>
             <p>Manage your accounts, make transfers, and track transactions with ease.</p>
             {% if user.is_authenticated %}
-                <a href="{% url 'Dashboard' %}" class="btn">Dash-board</a>
+                {% if User.Role == "Manager" %}
+                    <a href="{% url 'Manager' %}" class="btn">Manager Dashboard</a>
+                {% elif User.Role == "User" %}
+                    <a href="{% url 'Dashboard' %}" class="btn">Dashboard</a>
+                {% endif %}
             {% else %}
                 <a href="{% url 'Sign-up' %}" class="btn">Get Started</a>
             {% endif %}

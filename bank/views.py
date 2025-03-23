@@ -12,7 +12,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render , redirect
 from .models import Loan, User_reg , Transactions , Supports, BillPayment
 from django.contrib.auth import login , logout , authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -28,9 +28,15 @@ import json
 import google.generativeai as genai 
 from django.db.models import Sum  # Add this import
 
+def auth_user(user):
+    return user.groups.filter(name='User').exists()
 # homepage 
 def homepage(request):
-    return render(request,'./homepage.html',)
+    if request.user.is_anonymous: 
+        return render(request,'./homepage.html')
+    else:
+        user = User_reg.objects.get(user=request.user)
+        return render(request,'./homepage.html',{"User":user})
 
 # User profile page
 def User_profile(request):
@@ -86,7 +92,10 @@ def loginpg(request):
         if user :
             login(request,user)
             messages.success(request,"You are now logged in")
-            return redirect("Dashboard")
+            if user.groups.filter(name='Manager').exists() :
+                return redirect("Manager")
+            else:
+                return redirect("Dashboard")
         else:
             messages.error(request,"invalid Credentials")
             return redirect("login page")
@@ -122,8 +131,8 @@ def support(request):
                 "gemini-1.5-flash", 
                 system_instruction=f"""
                 You are a Customer Service agent at CHD-BANK. 
-                Reply to {Name}'s issue in a **polite and professional manner**. 
-                Format your response as a **HTML email** with a branded CHD-BANK template.
+                Reply to {Name}'s issue in a polite and professional manner. 
+                Format your response as a HTML email with a branded CHD-BANK template.
                 this is bank logo https://clipartcraft.com/images/bank-logo-icon-9.png .
                 this is the customer care number xxxxxxxxx.
                 Note : just generate the HTML response and send it to the customer and don't generate anything else in the response .
@@ -306,6 +315,7 @@ def sign_up(request):
     return render(request,"./signup.html")
 
 # DashBoard page
+@user_passes_test(auth_user)
 def dashboard(request):
     '''The `dashboard` function in Python checks if a user is logged in, retrieves transaction data,
     generates a pie chart based on transaction types, and renders a dashboard template with user
