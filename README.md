@@ -76,9 +76,9 @@ below is installation of python web framework django
 
 Note : setup python venv before running django commands
 
-- django
+- requirements.txt
   ```sh
-  pip install django
+  pip install -r requirements.txt
   ```
 ### Installation
 
@@ -92,9 +92,9 @@ _Bellow are the installation steps to set-up the portal locally on your computer
    ```sh
    cd directory
    ```
-3. install django(if not installed)
+3. install all dependencies from Requirements.txt
    ```sh
-    py -m pip install django 
+    pip install -r requirements.txt
    ```
 4. Run the development server command
    ```sh
