@@ -8,6 +8,7 @@ import matplotlib
 from BankPortal import settings
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from django.contrib.auth.models import User, Group  # Добавьте Group
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render , redirect
 from .models import Loan, User_reg , Transactions , Supports, BillPayment
@@ -86,10 +87,10 @@ def loginpg(request):
     '''
 
     if request.method == 'POST':
-        username_user = str(request.POST['name'])
-        password_user = str(request.POST['password'])
-        user = authenticate(username=username_user, password=password_user)
-        if user :
+        username_user = request.POST.get('name')  # Используйте get() вместо прямого доступа
+        password_user = request.POST.get('password')
+        user = authenticate(request, username=username_user, password=password_user)
+        if user is not None:
             login(request,user)
             messages.success(request,"You are now logged in")
             if user.groups.filter(name='Manager').exists() :
@@ -306,7 +307,10 @@ def sign_up(request):
             messages.error(request,"Username exists")
             return redirect("Sign-up")
         else:
-                user = User.objects.create(username=username,password=password)
+                user = User.objects.create_user(username=username, password=password)
+                user_group = Group.objects.get(name='User')
+                user.groups.add(user_group)
+                user.save()
                 User_reg.objects.create(user=user,account_number=ac_number,phone=phone,email=Email,account_type=ac_type,gender=gender,image=Photo,address=address,Pan=pan,aadhaar=Aadhaar,DoB=dob)
                 login(request,user)
                 messages.success(request,"Your account was successfully created!!")
@@ -315,7 +319,6 @@ def sign_up(request):
     return render(request,"./signup.html")
 
 # DashBoard page
-@user_passes_test(auth_user)
 def dashboard(request):
     '''The `dashboard` function in Python checks if a user is logged in, retrieves transaction data,
     generates a pie chart based on transaction types, and renders a dashboard template with user

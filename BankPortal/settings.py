@@ -87,6 +87,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = 'login page'  # The name of your login URL pattern
+LOGIN_REDIRECT_URL = 'Dashboard'  # Where to redirect after login
+
 
 STATIC_URL = 'static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
