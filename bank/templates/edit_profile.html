@@ -305,40 +305,40 @@
         <div class="rupee">&#8377;</div>
     </div>
 
-    <!-- Updated Sidebar -->
+    <!-- Обновленная боковая панель -->
     <div class="sidebar hidden" id="sidebar">
         <div class="sidebar-header">
-            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="CHD-BANK Logo">
-            <span>CHD Bank</span>
+            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="Логотип CHD-BANK">
+            <span>CHD Банк</span>
         </div>
         <a href="{% url 'Homepage' %}" class="{% if request.resolver_match.url_name == 'Homepage' %}active{% endif %}">
-            <i class="fas fa-home"></i> <span>Home</span>
+            <i class="fas fa-home"></i> <span>Главная</span>
         </a>
         <a href="{% url 'Dashboard' %}" class="{% if request.resolver_match.url_name == 'Dashboard' %}active{% endif %}">
-            <i class="fas fa-th-large"></i> <span>Dashboard</span>
+            <i class="fas fa-th-large"></i> <span>Панель управления</span>
         </a>
         <a href="{% url 'User' %}" class="{% if request.resolver_match.url_name == 'User' %}active{% endif %}">
-            <i class="fas fa-user"></i> <span>Profile</span>
+            <i class="fas fa-user"></i> <span>Профиль</span>
         </a>
         <a href="{% url 'transaction page' %}" class="{% if request.resolver_match.url_name == 'transaction page' %}active{% endif %}">
-            <i class="fas fa-exchange-alt"></i> <span>Transactions</span>
+            <i class="fas fa-exchange-alt"></i> <span>Транзакции</span>
         </a>
         <a href="{% url 'support page' %}" class="{% if request.resolver_match.url_name == 'support page' %}active{% endif %}">
-            <i class="fas fa-headset"></i> <span>Support</span>
+            <i class="fas fa-headset"></i> <span>Поддержка</span>
         </a>
         <div class="button-group">
             <button id="settingsButton">
                 <i class="fas fa-cogs"></i>
-                <span>Settings</span>
+                <span>Настройки</span>
             </button>
             <button id="logoutButton" onclick="location.href='{% url 'Logout' %}'">
                 <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
+                <span>Выйти</span>
             </button>
         </div>
     </div>
 
-    <!-- Updated Sidebar Toggle Button -->
+    <!-- Обновленная кнопка переключения боковой панели -->
     <button class="sidebar-toggle" id="sidebarToggle">
         <div class="hamburger"></div>
     </button>
@@ -347,11 +347,11 @@
         <button class="back-button" onclick="location.href='{% url 'Dashboard' %}'">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <h2>Edit Profile</h2>
+        <h2>Редактирование профиля</h2>
         <form method="post">
             {% csrf_token %}
             <div class="input-group">
-                <label for="username">Full Name</label>
+                <label for="username">Полное имя</label>
                 <input type="text" id="username" name="username" value="{{ User.user.username }}" >
             </div>
             <div class="input-group">
@@ -359,19 +359,19 @@
                 <input type="email" id="email" name="email" value="{{ User.email }}" >
             </div>
             <div class="input-group">
-                <label for="phone">Phone Number</label>
+                <label for="phone">Номер телефона</label>
                 <input type="tel" id="phone" name="phone" value="{{ User.phone }}" >
             </div>
             <div class="input-group">
-                <label for="dob">Date of Birth</label>
+                <label for="dob">Дата рождения</label>
                 <input type="date" id="dob" name="dob" value="{{ User.dob }}" >
             </div>
             <div class="input-group">
-                <label for="address">Address</label>
+                <label for="address">Адрес</label>
                 <input type="text" id="address" name="address" value="{{ User.address }}" >
             </div>
             <div class="actions">
-                <button type="submit">Save Changes</button>
+                <button type="submit">Сохранить изменения</button>
             </div>
         </form>
     </div>

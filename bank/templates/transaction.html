@@ -571,32 +571,32 @@
     </div>
     <div class="sidebar hidden" id="sidebar">
         <div class="sidebar-header">
-            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="CHD-BANK Logo">
-            <span>CHD Bank</span>
+            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="Логотип CHD-BANK">
+            <span>CHD Банк</span>
         </div>
         <a href="{% url 'Homepage' %}" class="{% if request.resolver_match.url_name == 'Homepage' %}active{% endif %}">
-            <i class="fas fa-home"></i> <span>Home</span>
+            <i class="fas fa-home"></i> <span>Главная</span>
         </a>
         <a href="{% url 'Dashboard' %}" class="{% if request.resolver_match.url_name == 'Dashboard' %}active{% endif %}">
-            <i class="fas fa-th-large"></i> <span>Dashboard</span>
+            <i class="fas fa-th-large"></i> <span>Панель управления</span>
         </a>
         <a href="{% url 'User' %}" class="{% if request.resolver_match.url_name == 'User' %}active{% endif %}">
-            <i class="fas fa-user"></i> <span>Profile</span>
+            <i class="fas fa-user"></i> <span>Профиль</span>
         </a>
         <a href="{% url 'transaction page' %}" class="{% if request.resolver_match.url_name == 'transaction page' %}active{% endif %}">
-            <i class="fas fa-exchange-alt"></i> <span>Transactions</span>
+            <i class="fas fa-exchange-alt"></i> <span>Транзакции</span>
         </a>
         <a href="{% url 'support page' %}" class="{% if request.resolver_match.url_name == 'support page' %}active{% endif %}">
-            <i class="fas fa-headset"></i> <span>Support</span>
+            <i class="fas fa-headset"></i> <span>Поддержка</span>
         </a>
         <div class="button-group">
             <button id="settingsButton">
                 <i class="fas fa-cogs"></i>
-                <span>Settings</span>
+                <span>Настройки</span>
             </button>
             <button id="logoutButton" onclick="location.href='{% url 'Logout' %}'">
                 <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
+                <span>Выйти</span>
             </button>
         </div>
     </div>
@@ -605,22 +605,22 @@
     </button>
     <header>
         <div class="container">
-            <h1>CHD Bank - Your Transactions</h1>
-            <p>Track and manage your recent transactions easily.</p>
+            <h1>CHD Банк - Ваши транзакции</h1>
+            <p>Отслеживайте и управляйте вашими операциями</p>
         </div>
     </header>
 
     <section class="transaction-history">
         <div class="container">
-            <h2>Recent Transactions</h2>
+            <h2>Последние транзакции</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Account</th>
-                        <th>Description</th>
-                        <th>Type</th>
-                        <th>Amount</th>
+                        <th>Дата</th>
+                        <th>Счёт</th>
+                        <th>Описание</th>
+                        <th>Тип</th>
+                        <th>Сумма</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -639,7 +639,6 @@
                         {% endif %}
                     </tr>
                     {% endfor %}
-                    
                 </tbody>
             </table>
         </div>
@@ -647,34 +646,34 @@
 
     <section class="download-transactions">
         <div class="container">
-            <h2>Download Transaction History</h2>
-            <p>You can download a full statement of your transactions for a specific date range.</p>
+            <h2>Выписка по счету</h2>
+            <p>Вы можете скачать полную историю транзакций за выбранный период.</p>
             <form method="post">
                 {% csrf_token %} 
-                <label for="start-date">Start Date:</label>
+                <label for="start-date">Начальная дата:</label>
                 <input type="date" id="start-date" name="start-date" required>
 
-                <label for="end-date">End Date:</label>
+                <label for="end-date">Конечная дата:</label>
                 <input type="date" id="end-date" name="end-date" required>
 
-                <button type="submit" class="btn">Download Statement</button>
+                <button type="submit" class="btn">Скачать выписку</button>
             </form>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 AAU Bank. All rights reserved.</p>
+            <p>&copy; 2024 AAU Банк. Все права защищены.</p>
         </div>
     </footer>
     <div id="chatbot-container">
         <div id="chatbot-header">
-            <span>CHD-BANK Assistant</span>
+            <span>Ассистент CHD-BANK</span>
             <button id="chatbot-close">&times;</button>
         </div>
         <div id="chatbot-messages"></div>
         <div id="chatbot-input">
-            <input type="text" id="chatbot-text" placeholder="Type your message...">
+            <input type="text" id="chatbot-text" placeholder="Введите сообщение...">
             <button id="chatbot-send"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
@@ -685,10 +684,10 @@
             <div class="toast-container position-fixed top-0 end-0 p-3">
                 <div class="toast " role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
                     <div class="toast-header">
-                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Bank Logo" style="width: 24px; height: 24px;">
-                        <strong class="me-auto">CHD Banking</strong>
-                        <small>Just now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Логотип банка" style="width: 24px; height: 24px;">
+                        <strong class="me-auto">CHD Банк</strong>
+                        <small>Только что</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
                     </div>
                     <div class="toast-body">
                         {{ message }}

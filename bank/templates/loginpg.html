@@ -180,26 +180,26 @@
         <div class="rupee">₹</div>
     </div>
     <div class="login-box">
-        <a href="{% url 'Homepage' %}" class="home-button">&larr; Home</a>
+        <a href="{% url 'Homepage' %}" class="home-button">&larr; На главную</a>
         <div class="icon">
-            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="CHD-BANK Logo">
+            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="Логотип CHD-BANK">
         </div>
-        <h2>Welcome to CHD-BANK</h2>
-        <p>Sign in to access your personalized dashboard and explore all features.</p>
+        <h2>Добро пожаловать в CHD-BANK</h2>
+        <p>Войдите, чтобы получить доступ к персональному кабинету и всем функциям.</p>
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
-                <input type="name" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                <input type="name" class="form-control" id="name" name="name" placeholder="Введите ваше имя" required>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль" required>
             </div>
             <div class="show-password">
                 <input type="checkbox" id="togglePassword">
-                <label for="togglePassword">Show Password</label>
+                <label for="togglePassword">Показать пароль</label>
             </div>
-            <button type="submit" class="btn btn-primary">Sign In</button>
-            <a href="{% url 'Change Password' %}" class="forgot-password">Forgot Password?</a>
+            <button type="submit" class="btn btn-primary">Войти</button>
+            <a href="{% url 'Change Password' %}" class="forgot-password">Забыли пароль?</a>
         </form>
     </div>
     <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -209,10 +209,10 @@
         <div class="toast-container position-fixed top-0 end-0 p-3">
             <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
                 <div class="toast-header">
-                    <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Bank Logo" style="width: 24px; height: 24px;">
-                    <strong class="me-auto">CHD Bank</strong>
-                    <small>Just now</small>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Логотип банка" style="width: 24px; height: 24px;">
+                    <strong class="me-auto">CHD Банк</strong>
+                    <small>Только что</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
                 </div>
                 <div class="toast-body">
                     {{ message }}
@@ -224,10 +224,10 @@
         <div class="toast-container position-fixed top-0 end-0 p-3">
             <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
                 <div class="toast-header">
-                    <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Bank Logo" style="width: 24px; height: 24px;">
-                    <strong class="me-auto">CHD Bank</strong>
-                    <small>Just now</small>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Логотип банка" style="width: 24px; height: 24px;">
+                    <strong class="me-auto">CHD Банк</strong>
+                    <small>Только что</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
                 </div>
                 <div class="toast-body">
                     {{ message }}

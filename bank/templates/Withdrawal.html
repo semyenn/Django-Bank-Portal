@@ -146,23 +146,23 @@
         <button class="back-button" onclick="location.href='{% url 'Dashboard' %}'">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <h2>With-Draw</h2>
+        <h2>Снятие средств</h2>
         <form method="post">
             {% csrf_token %}
             <div class="input-group">
-                <label for="account-number">Account Number</label>
+                <label for="account-number">Номер счета</label>
                 <input type="text" id="account-number" name="account-number" required>
             </div>
             <div class="input-group">
-                <label for="withdrawal-amount">WithDrawal Amount</label>
+                <label for="withdrawal-amount">Сумма снятия</label>
                 <input type="number" id="Withdrawal-amount" name="withdrawal-amount" required>
             </div>
             <div class="input-group">
-                <label for="transaction-description">Transaction Description</label>
-                <textarea id="transaction-description" name="transaction-description" placeholder="Enter details about the transaction"></textarea>
+                <label for="transaction-description">Описание операции</label>
+                <textarea id="transaction-description" name="transaction-description" placeholder="Введите детали операции"></textarea>
             </div>
             <div class="actions">
-                <button type="submit">Make Withdrawal</button>
+                <button type="submit">Снять средства</button>
             </div>
         </form>
     </div>

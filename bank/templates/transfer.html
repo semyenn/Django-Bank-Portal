@@ -154,28 +154,28 @@
         <div class="rupee">&#8377;</div>
     </div>
     <div class="transfer-container">
-        <a href="{% url 'Dashboard' %}" class="back-button">Back to Dashboard</a>
-        <h2>Fund Transfer</h2>
+        <a href="{% url 'Dashboard' %}" class="back-button">Назад в панель управления</a>
+        <h2>Перевод средств</h2>
         <form method="post">
             {% csrf_token %}
             <div class="input-group">
-                <label for="user-account">Your Account Number</label>
+                <label for="user-account">Ваш номер счета</label>
                 <input type="text" id="user-account" name="user-account" required>
             </div>
             <div class="input-group">
-                <label for="Receiptent-account">Recipient Account Number</label>
+                <label for="Receiptent-account">Номер счета получателя</label>
                 <input type="text" id="Receiptent-account" name="Receiptent-account" required>
             </div>
             <div class="input-group">
-                <label for="transfer-amount">Transfer Amount</label>
+                <label for="transfer-amount">Сумма перевода</label>
                 <input type="number" id="transfer-amount" name="transfer-amount" required>
             </div>
             <div class="input-group">
-                <label for="transaction-description">Transaction Description</label>
-                <textarea id="transaction-description" name="transaction-description" placeholder="Enter details about the transaction"></textarea>
+                <label for="transaction-description">Описание перевода</label>
+                <textarea id="transaction-description" name="transaction-description" placeholder="Укажите детали перевода"></textarea>
             </div>
             <div class="actions">
-                <button type="submit">Make Transfer</button>
+                <button type="submit">Выполнить перевод</button>
             </div>
         </form>
     </div>

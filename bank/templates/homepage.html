@@ -344,19 +344,19 @@
         </div>
         <div class="container">
             <nav>
-                <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="logo">
+                <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="логотип">
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="{% url 'support page' %}">Contact</a></li>
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="{% url 'support page' %}">Контакты</a></li>
                     {% if user.is_authenticated %}
                         {% if User.Role == "Manager" %}
-                        <li><a href="{% url 'Manager' %}">Manager Dashboard</a></li>
+                        <li><a href="{% url 'Manager' %}">Панель менеджера</a></li>
                         {% elif User.Role == "User" %}
-                            <li><a href="{% url 'Dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'Dashboard' %}">Личный кабинет</a></li>
                         {% endif %}
                     {% else %}
-                    <li><a href="{% url 'login page' %}">Login</a></li>
+                    <li><a href="{% url 'login page' %}">Войти</a></li>
                     {% endif %}
                 </ul>
             </nav>
@@ -365,49 +365,49 @@
 
     <section class="hero">
         <div class="container">
-            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/10535/10535976.png" alt="Rupee Icon"></div>
-            <div class="floating-icon"><img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="Bank Logo"></div>
-            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/10040/10040507.png" alt="Credit Card Icon"></div>
+            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/10535/10535976.png" alt="Иконка рупии"></div>
+            <div class="floating-icon"><img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="Логотип банка"></div>
+            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/10040/10040507.png" alt="Иконка кредитной карты"></div>
             <div class="floating-icon">₹</div>
-            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/845/845828.png" alt="Profits Icon"></div>
-            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/11436/11436287.png" alt="Investment Icon"></div>
-            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/2448/2448368.png" alt="Rupee Icon"></div>
-            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/16195/16195278.png" alt="Money Currency Icon"></div>
-            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/8385/8385947.png" alt="Transaction Icon"></div>
-            <h2>Welcome to CHD Banking</h2>
-            <p>Manage your accounts, make transfers, and track transactions with ease.</p>
+            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/845/845828.png" alt="Иконка прибыли"></div>
+            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/11436/11436287.png" alt="Иконка инвестиций"></div>
+            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/2448/2448368.png" alt="Иконка рупии"></div>
+            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/16195/16195278.png" alt="Иконка валюты"></div>
+            <div class="floating-icon"><img src="https://cdn-icons-png.flaticon.com/512/8385/8385947.png" alt="Иконка транзакции"></div>
+            <h2>Добро пожаловать в CHD Банк</h2>
+            <p>Управляйте счетами, переводите деньги и отслеживайте транзакции с легкостью.</p>
             {% if user.is_authenticated %}
                 {% if User.Role == "Manager" %}
-                    <a href="{% url 'Manager' %}" class="btn">Manager Dashboard</a>
+                    <a href="{% url 'Manager' %}" class="btn">Панель менеджера</a>
                 {% elif User.Role == "User" %}
-                    <a href="{% url 'Dashboard' %}" class="btn">Dashboard</a>
+                    <a href="{% url 'Dashboard' %}" class="btn">Личный кабинет</a>
                 {% endif %}
             {% else %}
-                <a href="{% url 'Sign-up' %}" class="btn">Get Started</a>
+                <a href="{% url 'Sign-up' %}" class="btn">Начать</a>
             {% endif %}
         </div>
     </section>
 
     <section class="services" id="services">
         <div class="container">
-            <h3>Our Services</h3>
+            <h3>Наши услуги</h3>
             <div class="service-items">
                 <div class="service-item">
                     <a href="{% url 'Dashboard' %}" style="text-decoration: none; color: inherit;">
-                    <h4>Account Management</h4>
-                    <p>Manage your checking, savings, and investment accounts.</p>
+                    <h4>Управление счетами</h4>
+                    <p>Управляйте текущими, сберегательными и инвестиционными счетами.</p>
                     </a>
                 </div>
                 <div class="service-item">
                     <a href="{% url 'Transfers' %}" style="text-decoration: none; color: inherit;">
-                    <h4>Transfer Funds</h4>
-                    <p>Transfer money to other accounts securely.</p>
+                    <h4>Перевод средств</h4>
+                    <p>Безопасно переводите деньги на другие счета.</p>
                     </a>
                 </div>
                 <div class="service-item">
                     <a href="{% url 'transaction page' %}" style="text-decoration: none; color: inherit;">
-                    <h4>View Transactions</h4>
-                    <p>Check your recent transactions at any time.</p>
+                    <h4>История операций</h4>
+                    <p>Просматривайте ваши последние транзакции в любое время.</p>
                     </a>
                 </div>
             </div>
@@ -416,7 +416,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 CHD Bank. All Rights Reserved.</p>
+            <p>&copy; 2024 CHD Банк. Все права защищены.</p>
         </div>
     </footer>
 

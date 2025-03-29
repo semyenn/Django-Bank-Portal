@@ -665,92 +665,92 @@
     </div>
     <div class="sidebar hidden" id="sidebar">
         <div class="sidebar-header">
-            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="CHD-BANK Logo">
-            <span>CHD Bank</span>
+            <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" alt="Логотип CHD-BANK">
+            <span>CHD Банк</span>
         </div>
         <a href="{% url 'Homepage' %}" class="{% if request.resolver_match.url_name == 'Homepage' %}active{% endif %}">
-            <i class="fas fa-home"></i> <span>Home</span>
+            <i class="fas fa-home"></i> <span>Главная</span>
         </a>
         <a href="{% url 'Dashboard' %}" class="{% if request.resolver_match.url_name == 'Dashboard' %}active{% endif %}">
-            <i class="fas fa-th-large"></i> <span>Dashboard</span>
+            <i class="fas fa-th-large"></i> <span>Панель управления</span>
         </a>
         <a href="{% url 'User' %}" class="{% if request.resolver_match.url_name == 'User' %}active{% endif %}">
-            <i class="fas fa-user"></i> <span>Profile</span>
+            <i class="fas fa-user"></i> <span>Профиль</span>
         </a>
         <a href="{% url 'transaction page' %}" class="{% if request.resolver_match.url_name == 'transaction page' %}active{% endif %}">
-            <i class="fas fa-exchange-alt"></i> <span>Transactions</span>
+            <i class="fas fa-exchange-alt"></i> <span>Транзакции</span>
         </a>
         <a href="{% url 'support page' %}" class="{% if request.resolver_match.url_name == 'support page' %}active{% endif %}">
-            <i class="fas fa-headset"></i> <span>Support</span>
+            <i class="fas fa-headset"></i> <span>Поддержка</span>
         </a>
         <div class="button-group">
             <button id="settingsButton">
                 <i class="fas fa-cogs"></i>
-                <span>Settings</span>
+                <span>Настройки</span>
             </button>
             <button id="logoutButton" onclick="location.href='{% url 'Logout' %}'">
                 <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
+                <span>Выйти</span>
             </button>
         </div>
     </div>
 
-    <!-- Sidebar Toggle Button -->
+    <!-- Кнопка переключения боковой панели -->
     <button class="sidebar-toggle" id="sidebarToggle">
         <div class="hamburger"></div>
     </button>
     
     <div class="dashboard-container">
-        <h2>Dashboard</h2>
+        <h2>Панель управления</h2>
         
         <div class="user-info-and-chart">
             <div class="user-info">
                 <div class="profile-photo">
                     {% if User.image %}
-                        <img src="{{ User.image.url }}" alt="Profile Photo">
+                        <img src="{{ User.image.url }}" alt="Фото профиля">
                     {% else %}
-                        <span>No Photo</span>
+                        <span>Нет фото</span>
                     {% endif %}
                 </div>
                 <div class="details">
                     <div>
-                        <strong><label>Full Name</label></strong>
+                        <strong><label>Полное имя</label></strong>
                         <p>{{ User.user.username }}</p>
                     </div>
                     <div>
-                        <strong><label>Account No.</label></strong>
+                        <strong><label>Номер счета</label></strong>
                         <p>{{ User.account_number }}</p>
                     </div>
                     <div>
-                        <strong><label>Account Type</label></strong>
+                        <strong><label>Тип счета</label></strong>
                         <p>{{ User.account_type }}</p>
                     </div>
                 </div>
             </div>
             <div class="data-visualization-card">
                 {% if chart != None  %}
-                <img src="data:image/png;base64,{{ chart }}" alt="Account Summary Chart" style="display: block; margin-left: auto; margin-right: auto; max-width: 100%;">
+                <img src="data:image/png;base64,{{ chart }}" alt="График состояния счета" style="display: block; margin-left: auto; margin-right: auto; max-width: 100%;">
                 {% else %}
-                <p>No transaction history available.</p>
+                <p>Нет данных о транзакциях.</p>
                 {% endif %}
             </div>
         </div>
         <div class="balance-card">
-            <h2>Total Balance</h2>
+            <h2>Общий баланс</h2>
             <div class="balance" id="balance">₹{{ User.balance }}</div>
-            <button class="toggle-btn" onclick="toggleBalance()">Hide Balance</button>
+            <button class="toggle-btn" onclick="toggleBalance()">Скрыть баланс</button>
         </div>
         <div class="account-overview">
-            <h3>Transaction History</h3>
+            <h3>История транзакций</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Account</th>
-                        <th>Description</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Balance</th>
+                        <th>Дата</th>
+                        <th>Счет</th>
+                        <th>Описание</th>
+                        <th>Тип</th>
+                        <th>Сумма</th>
+                        <th>Баланс</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -773,18 +773,18 @@
                 </tbody>
             </table>
             <div class="view-more">
-                <a href="{% url 'transaction page' %}">View More Transactions</a>
+                <a href="{% url 'transaction page' %}">Показать больше транзакций</a>
             </div>
             <div class="actions">
-                <button class="fund-transfer" onclick="location.href='{% url 'Transfers' %}'">Fund Transfer</button>
-                <button class="withdrawal" onclick="location.href='{% url 'WithDrawal' %}'">Withdrawal</button>
-                <button class="deposit" onclick="location.href='{% url 'Deposit' %}'">Deposit</button>
+                <button class="fund-transfer" onclick="location.href='{% url 'Transfers' %}'">Перевод средств</button>
+                <button class="withdrawal" onclick="location.href='{% url 'WithDrawal' %}'">Снятие</button>
+                <button class="deposit" onclick="location.href='{% url 'Deposit' %}'">Пополнение</button>
             </div>
         </div>
         
         <footer>
             <div class="container">
-                <p>&copy; 2024 CHD Bank. All rights reserved.</p>
+                <p>&copy; 2024 CHD Банк. Все права защищены.</p>
             </div>
         </footer>
     
@@ -796,10 +796,10 @@
             <div class="toast-container position-fixed top-0 end-0 p-3">
                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
                     <div class="toast-header">
-                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Bank Logo" style="width: 24px; height: 24px;">
-                        <strong class="me-auto">CHD Banking</strong>
-                        <small>Just now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Логотип банка" style="width: 24px; height: 24px;">
+                        <strong class="me-auto">CHD Банк</strong>
+                        <small>Только что</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
                     </div>
                     <div class="toast-body">
                         {{ message }}
@@ -810,10 +810,10 @@
             <div class="toast-container position-fixed top-0 end-0 p-3">
                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
                     <div class="toast-header">
-                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Bank Logo" style="width: 24px; height: 24px;">
-                        <strong class="me-auto">CHD Banking</strong>
-                        <small>Just now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Логотип банка" style="width: 24px; height: 24px;">
+                        <strong class="me-auto">CHD Банк</strong>
+                        <small>Только что</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
                     </div>
                     <div class="toast-body">
                         {{ message }}

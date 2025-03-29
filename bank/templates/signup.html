@@ -209,14 +209,14 @@
     <div class="signup-container">
         <div class="signup-box">
             <div class="header-container">
-                <h2>Sign Up</h2>
-                <a href="/" class="home-button">Home</a>
+                <h2>Регистрация</h2>
+                <a href="/" class="home-button">Главная</a>
             </div>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <div class="input-group">
-                    <label for="username">Username</label>
+                    <label for="username">Имя пользователя</label>
                     <input type="text" id="username" name="username" required>
                 </div>
 
@@ -227,60 +227,60 @@
 
                 <div class="row">
                     <div class="input-group">
-                        <label for="account_number">Account Number</label>
+                        <label for="account_number">Номер счета</label>
                         <input type="text" id="account_number" name="account_number" required>
                     </div>
                     <div class="input-group">
-                        <label for="phone">Phone No</label>
+                        <label for="phone">Телефон</label>
                         <input type="tel" id="phone" name="phone" required>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-group">
-                        <label for="account-type">Account Type</label>
+                        <label for="account-type">Тип счета</label>
                         <select id="account-type" name="account-type" required>
-                            <option value="">Select Account Type</option>
-                            <option value="savings">Savings</option>
-                            <option value="checking">Checking</option>
-                            <option value="business">Business</option>
+                            <option value="">Выберите тип счета</option>
+                            <option value="savings">Сберегательный</option>
+                            <option value="checking">Расчетный</option>
+                            <option value="business">Бизнес</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="Gender">Gender</label>
+                        <label for="Gender">Пол</label>
                         <select id="Gender" name="Gender" required>
-                            <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Others">Others</option>
+                            <option value="">Выберите пол</option>
+                            <option value="Male">Мужской</option>
+                            <option value="Female">Женский</option>
+                            <option value="Others">Другой</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-group">
-                        <label for="photo">Photo</label>
+                        <label for="photo">Фото</label>
                         <input type="file" id="photo" name="photo" accept="image/*">
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label for="dob">Date of Birth</label>
+                    <label for="dob">Дата рождения</label>
                     <input type="date" id="dob" name="dob" required>
                 </div>
 
                 <div class="input-group">
-                    <label for="password">Password </label>
+                    <label for="password">Пароль</label>
                     <input type="password" id="password" name="password" required>
                 </div>
                 <div class="input-group">
-                    <label for="confirm-password">Confirm Password</label>
+                    <label for="confirm-password">Подтвердите пароль</label>
                     <input type="password" id="confirm-password" name="confirm-password" required>
                 </div>
 
                 <div class="actions">
-                    <button type="submit">Sign Up</button>
-                    <p>Already have an account? <a href="{% url 'login page' %}">Login here</a></p>
+                    <button type="submit">Зарегистрироваться</button>
+                    <p>Уже есть аккаунт? <a href="{% url 'login page' %}">Войти</a></p>
                 </div>
             </form>
         </div>
@@ -290,10 +290,10 @@
             <div class="toast-container position-fixed top-0 end-0 p-3">
                 <div class="toast " role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
                     <div class="toast-header">
-                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Bank Logo" style="width: 24px; height: 24px;">
-                        <strong class="me-auto">CHD Banking</strong>
-                        <small>Just now</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Логотип банка" style="width: 24px; height: 24px;">
+                        <strong class="me-auto">CHD Банк</strong>
+                        <small>Только что</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
                     </div>
                     <div class="toast-body">
                         {{ message }}
