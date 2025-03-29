@@ -14,6 +14,11 @@ ALLOWED_HOSTS = [
     '127.0.0.1',  # For local development
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://django-bank-portal-production.up.railway.app',
+    # Add other trusted domains if needed
+]
+
 
 INSTALLED_APPS = [
     'django_daisy',
