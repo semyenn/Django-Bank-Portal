@@ -6,12 +6,11 @@ from django.utils import timezone
 
 # User Model
 # This class defines a model for user registration with various fields such as phone number, account
-# number, email, gender, account type, balance, address, image, PAN, Aadhaar, and date of birth.
+# number, email, gender, account type, balance, address, image, and date of birth.
 class User_reg(models.Model):
 
     user_type = [
         ('User', 'User'),
-        ('Manager', 'Manager'),
         ('Admin', 'Admin'),
     ]
 
@@ -24,8 +23,6 @@ class User_reg(models.Model):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     address = models.CharField(max_length=500,default="")
     image = models.ImageField(upload_to="User/Images",default="",null=True)
-    Pan = models.CharField(max_length=50,default="")
-    aadhaar = models.CharField(max_length=50,default="")
     DoB = models.CharField(max_length=20,default="")
     Role = models.CharField(max_length=100,default="User",choices=user_type)
 

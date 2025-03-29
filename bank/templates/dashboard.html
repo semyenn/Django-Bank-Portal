@@ -683,9 +683,6 @@
         <a href="{% url 'support page' %}" class="{% if request.resolver_match.url_name == 'support page' %}active{% endif %}">
             <i class="fas fa-headset"></i> <span>Support</span>
         </a>
-        <a href="{% url 'Billing Dashboard' %}" class="{% if request.resolver_match.url_name == 'Billing Dashboard' %}active{% endif %}">
-            <i class="fas fa-file-invoice"></i> <span>Bill Payments</span>
-        </a>
         <div class="button-group">
             <button id="settingsButton">
                 <i class="fas fa-cogs"></i>
@@ -790,18 +787,6 @@
                 <p>&copy; 2024 CHD Bank. All rights reserved.</p>
             </div>
         </footer>
-        <div id="chatbot-container">
-            <div id="chatbot-header">
-                <span>CHD-BANK Assistant</span>
-                <button id="chatbot-close">&times;</button>
-            </div>
-            <div id="chatbot-messages"></div>
-            <div id="chatbot-input">
-                <input type="text" id="chatbot-text" placeholder="Type your message...">
-                <button id="chatbot-send"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-        <button id="chatbot-toggle"><i class="fas fa-user-tie"></i></button>
     
     </div>
         <div class="toast-container position-fixed top-0 end-0 p-3">

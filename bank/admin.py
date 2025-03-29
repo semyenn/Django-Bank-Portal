@@ -9,9 +9,3 @@ admin.site.register(Transactions)
 
 # Support Data Model
 admin.site.register(Supports)
-
-# Loan Data Model
-admin.site.register(Loan)
-
-# Bill Application Data Model
-admin.site.register(BillPayment)

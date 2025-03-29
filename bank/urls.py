@@ -15,7 +15,4 @@ urlpatterns = [
     path("sign-up/",views.sign_up,name="Sign-up"),
     path("change-password/",views.change_password,name="Change Password"),
     path("Logout/",views.user_logout,name="Logout"),
-    path("chatbot/",views.Chatbot,name="Chatbot"),
-    path("Bill-and-Payments/",views.Billing_dashboard,name="Billing Dashboard"),
-    path("Loans/",views.loans,name="Loans"),
 ]

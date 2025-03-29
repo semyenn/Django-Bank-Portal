@@ -93,10 +93,7 @@ def loginpg(request):
         if user is not None:
             login(request,user)
             messages.success(request,"You are now logged in")
-            if user.groups.filter(name='Manager').exists() :
-                return redirect("Manager")
-            else:
-                return redirect("Dashboard")
+            return redirect("Dashboard")
         else:
             messages.error(request,"invalid Credentials")
             return redirect("login page")
@@ -297,10 +294,7 @@ def sign_up(request):
         phone = request.POST['phone']
         ac_type = request.POST['account-type']
         gender = request.POST['Gender']
-        address = request.POST['address']
         Photo = request.FILES['photo']
-        pan = request.POST['pan']
-        Aadhaar = request.POST['aadhaar']
         dob = request.POST['dob']
         
         if User.objects.filter(username=username).exists():
@@ -311,7 +305,7 @@ def sign_up(request):
                 user_group = Group.objects.get(name='User')
                 user.groups.add(user_group)
                 user.save()
-                User_reg.objects.create(user=user,account_number=ac_number,phone=phone,email=Email,account_type=ac_type,gender=gender,image=Photo,address=address,Pan=pan,aadhaar=Aadhaar,DoB=dob)
+                User_reg.objects.create(user=user,account_number=ac_number,phone=phone,email=Email,account_type=ac_type,gender=gender,image=Photo,DoB=dob)
                 login(request,user)
                 messages.success(request,"Your account was successfully created!!")
                 return redirect("Dashboard")
@@ -581,7 +575,6 @@ def edit_profile(request):
         email = request.POST['email']
         phone = request.POST['phone']
         Dob = request.POST['dob']
-        address = request.POST['address']
 
         if user_name:
             user_profile.user.username = user_name
@@ -591,8 +584,6 @@ def edit_profile(request):
             user_profile.phone = phone
         if Dob:
             user_profile.DoB = Dob
-        if address:
-            user_profile.address = address
         
         user_profile.save()
         messages.success(request, "Profile updated successfully")
@@ -645,130 +636,3 @@ def handler404(request,exception):
     
     '''
     return render(request,'./404.html')
-
-@csrf_exempt
-def Chatbot(request):
-    """
-    The `Chatbot` function processes user requests and generates replies using a generative model for a
-    bank chatbot in a web application.
-    
-    :param request: The `request` parameter in the `Chatbot` function is used to handle incoming HTTP
-    requests. It allows the function to access information sent by the client, such as form data or JSON
-    payloads. In the provided code snippet, the function checks if the request method is POST and then
-    processes the user
-    """
-    """
-    The function Chatbot handles user requests, processes messages, and generates replies using a
-    generative model for a bank chatbot.
-    
-    :param request: The `request` parameter in the `Chatbot` function is used to handle incoming HTTP
-    requests. It is used to access information sent by the client, such as form data or JSON payloads.
-    In this code snippet, the function checks if the request method is POST and then processes the
-    user's message
-    :return: The code snippet you provided is a Python function named `Chatbot` that seems to be a view
-    function for handling requests in a web application.
-    """
-    services = [
-        "Transfer Funds",
-        "Deposit Funds",
-        "Withdraw Funds",
-        "Support",
-        "Transaction history download"
-    ]
-    context = {
-        "services": services,
-        "account openning": "name,phone,email,account_number,account_type,address,pan,aadhaar,dob",
-        "Account types" : ["Savings","Current","Business"]
-    }
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        user_message = data['message']
-        print(user_message)
-        genai.configure(api_key="")
-        model = genai.GenerativeModel("gemini-1.5-flash", system_instruction=f"You are a Bank Manager at CHD-BANK, and you are talking to a customer who wants to know about the bank and its services. these are some things you can keep in mind {context}")
-        reply = model.generate_content(user_message)
-        return JsonResponse({'reply': reply.text})
-
-def Billing_dashboard(request):
-    """
-    The function `Billing_dashboard` processes bill payments for a user, deducting the amount from their
-    balance if sufficient and updating the transaction records accordingly.
-    
-    :param request: The `request` parameter in the `Billing_dashboard` function is an object that
-    contains information about the current HTTP request. It includes details such as the method used
-    (GET, POST, etc.), user data, and any data sent in the request (e.g., form data)
-    :return: The `Billing_dashboard` function returns a rendered template for the billing dashboard
-    page, which displays the bills and loans associated with the logged-in user. The bills are fetched
-    from the `BillPayment` model and loans from the `Loan` model for the current user. The function
-    handles POST requests for bill payments, deducts the payment amount from the user's balance if
-    sufficient funds are available, creates a
-    """
-    if request.method == "POST":
-        user = User_reg.objects.get(user=request.user)
-        bill_type = request.POST.get('billType')
-        Amount = decimal.Decimal(request.POST.get('amount'))  # Convert amount to decimal
-        bill_no = request.POST.get('Bill_no')
-
-        if user.balance > Amount:
-            user.balance -= Amount
-            user.save()
-            BillPayment.objects.create(user=user, bill_type=bill_type, amount=Amount, bill_status="PAID")
-            messages.success(request, "Bill Payment Successful")
-            Transactions.objects.create(user=user, amount=Amount, transaction_type="BILL", receiptent_no="Self", receiptent=Amount, about=bill_type)
-            return redirect('Billing Dashboard')
-        else:
-            messages.error(request, "Insufficient Balance")
-            return redirect('Billing Dashboard')
-    
-    user = User_reg.objects.get(user=request.user)
-    Bill = BillPayment.objects.filter(user=user)
-    loan = Loan.objects.filter(user=user)
-
-    # Calculate total monthly spending
-    total_monthly_spending = Bill.aggregate(total=Sum('amount'))['total'] or 0
-
-    # Convert Decimal values to float for JSON serialization
-    spending_data = list(Bill.values('bill_type').annotate(total=Sum('amount')))
-    for item in spending_data:
-        item['total'] = float(item['total'])
-
-    context = {
-        "Bills": Bill,
-        "User": user,
-        "total_monthly_spending": total_monthly_spending,
-        "spending_data": json.dumps(spending_data),
-        "loans" : loan
-    }
-    return render(request, './billing_dashboard.html', context)
-
-def loans(request):
-    """
-    The `loans` function processes a loan application submitted via a POST request, creates a new Loan
-    object in the database, and redirects the user to the Billing Dashboard with a success message.
-    
-    :param request: The `request` parameter in the `loans` function is an object that contains
-    information about the current HTTP request. It includes details such as the method used (POST or
-    GET), data submitted through the request, user information, and more. In this context, the function
-    is checking if the request
-    :return: The `loans` function returns a response based on the HTTP request method. If the request
-    method is "POST", it processes the loan application data submitted through a form, creates a new
-    Loan object in the database, and then redirects the user to the 'Billing Dashboard' page with a
-    success message. If the request method is not "POST", it renders the 'loan.html' template for the
-    """
-    if request.method == "POST":
-        name = request.POST.get("name")
-        amount = request.POST.get("amount")
-        tenure = request.POST.get("tenure")
-        income = request.POST.get('income')
-        employment = request.POST.get('employment')
-        loan_type = request.POST.get('purpose')
-
-        # Print for debugging
-        user = User_reg.objects.get(user=request.user)
-        Loan.objects.create(user=user, loan_amount=amount,loan_type=loan_type,loan_tenure=tenure,employment_type=employment,loan_status="PENDING")
-
-        # Add your loan processing logic here
-        messages.success(request, "Loan application submitted successfully!")
-        return redirect('Billing Dashboard')
-
-    return render(request, './loan.html')
