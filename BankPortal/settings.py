@@ -65,15 +65,25 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        # Проверяет, что пароль не слишком похож на другие данные пользователя (имя, email и т. д.)
+        'OPTIONS': {
+            'max_similarity': 0.7,  # Можно настроить уровень схожести (0-1)
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        # Проверяет минимальную длину пароля (по умолчанию 8)
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        # Проверяет, что пароль не находится в списке часто используемых паролей
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        # Проверяет, что пароль не состоит только из цифр
     },
 ]
 
