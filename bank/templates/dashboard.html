@@ -661,7 +661,7 @@
 </style>
 <body>
     <div class="loader">
-        <div class="rupee">₹</div>
+        <div class="rupee">$</div>
     </div>
     <div class="sidebar hidden" id="sidebar">
         <div class="sidebar-header">
@@ -737,7 +737,7 @@
         </div>
         <div class="balance-card">
             <h2>Общий баланс</h2>
-            <div class="balance" id="balance">₹{{ User.balance }}</div>
+            <div class="balance" id="balance">${{ User.balance }}</div>
             <button class="toggle-btn" onclick="toggleBalance()">Скрыть баланс</button>
         </div>
         <div class="account-overview">
@@ -761,13 +761,13 @@
                         <td>{{ T.about }}</td>
                         <td>{{ T.transaction_type }}</td>
                         {% if T.transaction_type == 'DEPOSIT' %}
-                            <td class="credit">₹{{ T.amount }}</td>
+                            <td class="credit">${{ T.amount }}</td>
                         {% elif T.transaction_type == 'WITHDRAW' %}
-                            <td class="debit">₹{{ T.amount }}</td>
+                            <td class="debit">${{ T.amount }}</td>
                         {% elif T.transaction_type == 'TRANSFER' %}
-                            <td style="color: #004080;">₹{{ T.amount }}</td>
+                            <td style="color: #004080;">${{ T.amount }}</td>
                         {% endif %}
-                        <td>₹{{ User.balance }}</td>
+                        <td>${{ User.balance }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -811,7 +811,7 @@
                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
                     <div class="toast-header">
                         <img src="https://clipartcraft.com/images/bank-logo-icon-9.png" class="rounded me-2" alt="Логотип банка" style="width: 24px; height: 24px;">
-                        <strong class="me-auto">Tralalelo банк</strong>
+                        <strong class="me-auto">CHD Банк</strong>
                         <small>Только что</small>
                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
                     </div>
@@ -880,10 +880,10 @@
               const balance = document.getElementById("balance");
               const button = document.querySelector(".toggle-btn");
               if (balanceVisible) {
-                balance.textContent = "₹₹₹₹₹₹₹";
+                balance.textContent = "$$$$$$$";
                 button.textContent = "Show Balance";
               } else {
-                balance.textContent = "₹{{ User.balance }}";
+                balance.textContent = "${{ User.balance }}";
                 button.textContent = "Hide Balance";
               }
               balanceVisible = !balanceVisible;

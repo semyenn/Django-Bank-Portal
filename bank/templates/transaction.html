@@ -567,7 +567,7 @@
 
 <body>
     <div class="loader">
-        <div class="rupee">₹</div>
+        <div class="rupee">$</div>
     </div>
     <div class="sidebar hidden" id="sidebar">
         <div class="sidebar-header">
@@ -631,11 +631,11 @@
                         <td>{{Transaction.about}}</td>
                         <td>{{Transaction.transaction_type}}</td>
                         {% if Transaction.transaction_type == 'DEPOSIT' or Transaction.transaction_type == 'BILL' or Transaction.transaction_type == 'Loan'%}
-                                <td class="credit">₹{{Transaction.amount}}</td>
+                                <td class="credit">${{Transaction.amount}}</td>
                         {% elif Transaction.transaction_type == 'WITHDRAW' %}
-                                <td class="debit">₹{{Transaction.amount}}</td>
+                                <td class="debit">${{Transaction.amount}}</td>
                         {% elif Transaction.transaction_type == 'TRANSFER' %}
-                                <td style="color: #004080;">₹{{Transaction.amount}}</td>
+                                <td style="color: #004080;">${{Transaction.amount}}</td>
                         {% endif %}
                     </tr>
                     {% endfor %}
