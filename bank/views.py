@@ -26,7 +26,6 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from datetime import datetime
 import json
-import google.generativeai as genai 
 from django.db.models import Sum  # Add this import
 
 def auth_user(user):
@@ -123,28 +122,9 @@ def support(request):
         issue = request.POST['issue']
         support = Supports.objects.create(name=Name,email=email,issue=issue)
         support.save()
-        if Name and email and issue :
-            genai.configure(api_key="")
-            model = genai.GenerativeModel(
-                "gemini-1.5-flash", 
-                system_instruction=f"""
-                You are a Customer Service agent at CHD-BANK. 
-                Reply to {Name}'s issue in a polite and professional manner. 
-                Format your response as a HTML email with a branded CHD-BANK template.
-                this is bank logo https://clipartcraft.com/images/bank-logo-icon-9.png .
-                this is the customer care number xxxxxxxxx.
-                Note : just generate the HTML response and send it to the customer and don't generate anything else in the response .
-                """
-                )
-            reply = model.generate_content(issue)
-            try :
-                email_message = EmailMessage(subject="Support Request",body=reply.text,from_email=settings.EMAIL_HOST_USER,to=[email,])
-                email_message.content_subtype = "html"  # Set email format to HTML
-                email_message.send()
-                messages.success(request,"Support request submitted successfully")
-            except BadHeaderError:
-                messages.error(request,"Invalid Header")
-                return redirect("support page")
+        messages.success(request,"Ваша жалоба зарегестрирована!")
+        return redirect("Dashboard")
+
 
     return render(request,'./support.html')
 
