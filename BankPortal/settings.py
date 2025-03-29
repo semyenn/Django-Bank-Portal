@@ -6,7 +6,12 @@ SECRET_KEY = 'django-insecure-l&38c6p1^6se5s)tag_^7^sc1y(o%*z%z=wjrpmw&3tig3)x4&
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'django-bank-portal.onrender.com',
+    # You can also add other domains or IPs as needed
+    'localhost',  # For local development
+    '127.0.0.1',  # For local development
+]
 
 
 INSTALLED_APPS = [
