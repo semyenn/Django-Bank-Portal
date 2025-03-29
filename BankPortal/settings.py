@@ -8,7 +8,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'django-bank-portal.onrender.com',
-    'django-bank-portal-production.up.railway.app'
+    'django-bank-portal-production.up.railway.app',
     # You can also add other domains or IPs as needed
     'localhost',  # For local development
     '127.0.0.1',  # For local development
